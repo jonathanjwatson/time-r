@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const app = express();
+const RegisterController = require('./controllers/register');
+const LoginController = require('./controllers/login');
+const passport = require('passport');
+
+const requireAuth = passport.authenticate('jwt', { session: false});
+const requireLogin = passport.authenticate('local', { session: false});
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
@@ -19,6 +25,8 @@ connection.on('error', (err) => {
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use('/auth/login', requireLogin, LoginController);
+app.use('/auth/register', RegisterController);
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
