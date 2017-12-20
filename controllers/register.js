@@ -24,7 +24,7 @@ router.post('/', function(req, res, next){
     console.log(req.body);
     // const email = "test2@gmail.com";
     let email = req.body.email;
-    // email = email.toLowerCase();
+    email = email.toLowerCase();
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     // const password = "password";

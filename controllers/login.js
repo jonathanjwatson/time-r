@@ -21,7 +21,7 @@ router.post('/', function(req, res, next){
     console.log(req.body);
     console.log("Hit the login route")
     let email = req.body.email;
-    // email = email.toLowerCase();
+    email = email.toLowerCase();
     const password = req.body.password
     console.log(email);
     User.findOne({ email: email }, function(err, foundUser) {
@@ -38,7 +38,7 @@ router.post('/', function(req, res, next){
                     console.log(err)
                 }
                 if (!isMatch) { 
-                    res.status(401).json({
+                    res.status(422).json({
                         error: "Invalid password"
                     })
                 }
