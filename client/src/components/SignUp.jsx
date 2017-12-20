@@ -17,7 +17,7 @@ class SignUp extends Component {
 			submittedForm: false,
 			redirect: false
         }
-	}
+    }
 	_handleChange = (e) => {
 		const attributeName = e.target.name;
 		const attributeValue = e.target.value;
@@ -25,35 +25,35 @@ class SignUp extends Component {
 		user[attributeName] = attributeValue;
 		this.setState({ user });
 	}
-	_handleSubmit = (e) => {
-		e.preventDefault();
-		const payload = this.state.user;
-		axios.post(`/auth/register`, payload)
-		.then((res) => {
-            console.log(res);
-			console.log("success")
-			// const submittedForm = !submittedForm
-			// this.setState({submittedForm})
-			let token = res.data.token;
-			console.log(token);
-			this.setState({token})
-			cookies.set("token", token);
-			if(token){
-				let redirect = !this.state.redirect;
-				this.setState({redirect})
-			}
-        })
-        .catch((err) => {
-            console.log(err.response.data.error);
-        })
-	}
+	// _handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	const payload = this.state.user;
+	// 	axios.post(`/auth/register`, payload)
+	// 	.then((res) => {
+    //         console.log(res);
+	// 		console.log("success")
+	// 		// const submittedForm = !submittedForm
+	// 		// this.setState({submittedForm})
+	// 		let token = res.data.token;
+	// 		console.log(token);
+	// 		this.setState({token})
+	// 		cookies.set("token", token);
+	// 		if(token){
+	// 			let redirect = !this.state.redirect;
+	// 			this.setState({redirect})
+	// 		}
+    //     })
+    //     .catch((err) => {
+    //         console.log(err.response.data.error);
+    //     })
+	// }
     render() {
 		if (this.state.redirect){
 			return <Redirect to="/dashboard" jwt={this.state.token}/>
 		  }
         return (
             <div>
-				<form onSubmit={this._handleSubmit}>
+				<form onSubmit={(e) => this.props._handleSubmit(e, this.state.user, "register")}>
 					<input 
 						type="text" 
 						onChange={this._handleChange}
