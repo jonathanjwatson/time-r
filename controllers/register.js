@@ -5,25 +5,26 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/user');
 
-setUserInfo = (req) => {
+setUserInfo = function(req){
     return {
         _id: req._id,
         email: req.email,
     }
 }
 
-generateToken = (user) => {
+generateToken = function(user){
     return jwt.sign(user, process.env.JWT_SECRET, {
         expiresIn: 10080 //in seconds
     })
 }
 
 
-router.post('/', (req, res, next) => {
+router.post('/', function(req, res, next){
     console.log("Hit the register route")
     console.log(req.body);
     // const email = "test2@gmail.com";
-    const email = req.body.email;
+    let email = req.body.email;
+    email = email.toLowerCase();
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     // const password = "password";

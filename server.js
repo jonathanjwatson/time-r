@@ -3,29 +3,29 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const router = require('./router');
+const passport = require('passport');
 const app = express();
 const RegisterController = require('./controllers/register');
 const LoginController = require('./controllers/login');
-const passport = require('passport');
 
-const requireAuth = passport.authenticate('jwt', { session: false});
 const requireLogin = passport.authenticate('local', { session: false});
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 const connection = mongoose.connection;
-connection.on('connected', () => {
+connection.on('connected', function(){
     console.log('Mongoose Connected Successfully');
 });
 
-connection.on('error', (err) => {
+connection.on('error', function(err){
     console.log(`Mongoose default connection error: ${err}`)
 });
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use('/auth/login', requireLogin, LoginController);
+app.use('/auth/login', LoginController);
 app.use('/auth/register', RegisterController);
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -35,11 +35,11 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(express.static(__dirname + '/client/build/'));
-app.get('*', (req,res) => {
+app.get('*', function(req,res){
     res.sendFile(__dirname + '/client/build/index.html')
   })
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+app.listen(PORT, function(){
     console.log(`Magic is happening on port ${PORT}`);
 });

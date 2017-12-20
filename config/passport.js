@@ -1,3 +1,4 @@
+// Importing Passport, strategies, and config
 require("dotenv").config();
 const passport = require('passport'),  
 User = require('../models/user'),
@@ -8,12 +9,12 @@ LocalStrategy = require('passport-local');
 const localOptions = { usernameField: 'email' }; 
 
 // Setting up local login strategy
-const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-    User.findOne({ email: email }, (err, user) => {
+const localLogin = new LocalStrategy(localOptions, function(email, password, done) {  
+    User.findOne({ email: email }, function(err, user) {
       if(err) { return done(err); }
       if(!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
   
-      user.comparePassword(password, (err, isMatch) => {
+      user.comparePassword(password, function(err, isMatch) {
         if (err) { return done(err); }
         if (!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
   
@@ -30,8 +31,8 @@ secretOrKey: process.env.JWT_SECRET
 };
 
   // Setting up JWT login strategy
-const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {  
-    User.findById(payload._id, (err, user) => {
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {  
+    User.findById(payload._id, function(err, user) {
       if (err) { return done(err, false); }
   
       if (user) {
