@@ -1,0 +1,31 @@
+{
+  "name": "time-r",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathanjwatson/time-r.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonathanjwatson/time-r/issues"
+  },
+  "homepage": "https://github.com/jonathanjwatson/time-r#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.10.8",
+    "morgan": "^1.9.0"
+  }
+}
