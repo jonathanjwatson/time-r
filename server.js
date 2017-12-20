@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const router = require('./router');
 const passport = require('passport');
 const app = express();
 const RegisterController = require('./controllers/register');

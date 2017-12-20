@@ -21,7 +21,7 @@ router.post('/', function(req, res, next){
     console.log(req.body);
     console.log("Hit the login route")
     let email = req.body.email;
-    email = email.toLowerCase();
+    // email = email.toLowerCase();
     const password = req.body.password
     console.log(email);
     User.findOne({ email: email }, function(err, foundUser) {
@@ -29,25 +29,36 @@ router.post('/', function(req, res, next){
             console.log(err);
          }
         if(!foundUser) {
-            console.log("Your login details could not be verified");
+            res.status(401).json({
+                error: "No user found"
+            })
         } else{
             foundUser.comparePassword(password, function(err, isMatch) {
-                if (err) { return done(err); }
-                if (!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
+                if (err) { 
+                    console.log(err)
+                }
+                if (!isMatch) { 
+                    res.status(401).json({
+                        error: "Invalid password"
+                    })
+                }
+                if (isMatch) {
+                    let userInfo = setUserInfo(foundUser);
+
+                    let token = generateToken(userInfo)
+                    foundUser.token = token;
+            
+                    foundUser.save(function(err, user) {
+                    if (err) { return next(err); }
+
+                    res.status(200).json({
+                        user: userInfo,
+                        token: user.token
+                    });
+                    });
+                }
               });
-                let userInfo = setUserInfo(foundUser);
-
-                let token = generateToken(userInfo)
-                foundUser.token = token;
-        
-                foundUser.save(function(err, user) {
-                if (err) { return next(err); }
-
-                res.status(201).json({
-                    user: userInfo,
-                    token: user.token
-                });
-                });
+                
         }
         
         
